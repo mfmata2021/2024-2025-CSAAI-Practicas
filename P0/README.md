@@ -1,0 +1,2 @@
+
+# CSAAI: Pŕactica 0 
