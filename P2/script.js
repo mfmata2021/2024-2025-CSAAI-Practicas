@@ -9,7 +9,7 @@ const resetBtn = document.getElementById('reset');
 let clave = [];
 let descubiertos = [];
 let intentos = 10;
-let iniciado = false;
+let juegoIniciado = false;
 
 // Crear instancia del cronómetro
 const crono = new Crono(tiempoSpan);
@@ -24,7 +24,7 @@ function nuevaClave() {
     clave = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10));
     descubiertos = [false, false, false, false];
     intentos = 10;
-    iniciado = false;
+    juegoIniciado = false;
     crono.stop();
     crono.reset();
     actualizarVista();
@@ -40,9 +40,9 @@ function actualizarVista() {
 
 // Comprobar número pulsado
 function comprobarNumero(num) {
-    if (!iniciado) {
-        crono.start();
-        iniciado = true;
+    if (!juegoIniciado) {
+        juegoIniciado = true;
+        crono.start(); // Inicia el cronómetro SOLO si no está en marcha
     }
 
     let acierto = false;
@@ -62,14 +62,19 @@ function comprobarNumero(num) {
         alert('¡Ganaste!');
         nuevaClave();
     } else if (intentos === 0) {
+        crono.stop();
         alert('¡Sin intentos! Reiniciando...');
         nuevaClave();
     }
 }
 
 // Botones control
-startBtn.onclick = () => crono.start();
+startBtn.onclick = () => {
+    crono.start();
+};
+
 stopBtn.onclick = () => crono.stop();
+
 resetBtn.onclick = () => nuevaClave();
 
 // Inicializar
