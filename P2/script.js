@@ -1,6 +1,6 @@
 const claveDiv = document.getElementById('clave');
 const intentosSpan = document.getElementById('intentos');
-const tiempoSpan = document.getElementById('tiempo'); // Aquí usaremos Crono
+const tiempoSpan = document.getElementById('tiempo');
 const botonesDiv = document.getElementById('botones');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
@@ -14,13 +14,10 @@ let iniciado = false;
 // Crear instancia del cronómetro
 const crono = new Crono(tiempoSpan);
 
-// Crear botones 0-9
-for (let i = 0; i <= 9; i++) {
-    const btn = document.createElement('button');
-    btn.textContent = i;
-    btn.onclick = () => comprobarNumero(i);
-    botonesDiv.appendChild(btn);
-}
+// Inicializar los botones 0-9
+[...botonesDiv.children].forEach(boton => {
+    boton.onclick = () => comprobarNumero(parseInt(boton.textContent));
+});
 
 // Generar nueva clave
 function nuevaClave() {
@@ -33,7 +30,7 @@ function nuevaClave() {
     actualizarVista();
 }
 
-// Mostrar clave, intentos
+// Mostrar clave e intentos
 function actualizarVista() {
     claveDiv.innerHTML = clave.map((n, i) =>
         descubiertos[i] ? `<span class="acertado">${n}</span>` : `<span class="oculto">*</span>`
