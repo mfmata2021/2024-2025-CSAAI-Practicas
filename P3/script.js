@@ -24,7 +24,7 @@ function update() {
     //-- (física del movimiento rectilíneo uniforme)
 
     //-- Condición de rebote en extremos del canvas
-    if (x < 0 || x >= (canvas.width - 20)) {
+    if (x < 0 || x >= (canvas.width - 30)) {
         velx = -velx;
     }
 
