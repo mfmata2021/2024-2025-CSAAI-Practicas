@@ -1,6 +1,6 @@
 body {
     margin: 10px;
-    background-image: "pink_space.jpg";
+    background-image: ref="pink_space.jpg";
 }
 
 .container {
@@ -22,15 +22,15 @@ body {
 }
 
 .boton {
-    color: red;
+    color: pink;
     font-size: 40px;
-    background-color: #000000;
+    background-color: #d46893;
     cursor: pointer;
     border-radius: 8px;
-    border: 2px solid blue;
+    border: 2px solid rgb(173, 37, 121);
 }
 
 .boton:hover {
     background-color: white;
-    color: #000000;
+    color: #d46893;
 }
