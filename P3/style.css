@@ -1,6 +1,6 @@
 body {
     margin: 10px;
-    background-image: url('../P3/pink_space.jpg');
+    background: black;
 }
 
 .container {
@@ -17,7 +17,7 @@ body {
 }
 
 #my_canvas {
-    background: #000000;
+    background-image: url(../P3/pink_space.jpg);
     border: #000 1px solid;
 }
 
