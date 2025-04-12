@@ -3,8 +3,8 @@ console.log("Ejecutando JS...");
 const canvas = document.getElementById("canvas");
 
 //-- Definir el tamaño del canvas
-canvas.width = 600;
-canvas.height = 400;
+canvas.width = 700;
+canvas.height = 600;
 
 //-- Obtener el contexto del canvas
 const ctx = canvas.getContext("2d");
@@ -36,10 +36,10 @@ function update() {
 
     //-- 3) Dibujar los elementos visibles
     ctx.beginPath();
-    ctx.rect(x, y, 20, 20);
+    ctx.rect(x, y, 40, 40);
 
     //-- Dibujar
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'pink';
 
     //-- Rellenar
     ctx.fill();
