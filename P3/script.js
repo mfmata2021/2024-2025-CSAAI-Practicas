@@ -5,10 +5,14 @@ const ctx = canvas.getContext('2d');
 const backgroundImage = new Image();
 const naveImage = new Image();
 const enemiespic1 = new Image();
+const explosionImage = new Image();
+
+
 
 backgroundImage.src = "background.jpg";
 naveImage.src = "nave_rosa.png";
 enemiespic1.src = "enemigos_rosa.png";
+explosionImage.src = "explosion.png";
 
 // Cargar sonidos
 const disparoAudio = new Audio('audio/disparo.mp3');
@@ -36,6 +40,8 @@ let rows = 3;
 let cols = 8;
 let enemySpeed = 1;
 let enemyDirection = 1;
+let explosiones = []; // {x, y, frame}
+
 
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
@@ -133,6 +139,11 @@ function draw() {
             const enemy = enemigos[j];
             if (enemy.alive && m.x < enemy.x + enemy.w && m.x + m.w > enemy.x && m.y < enemy.y + enemy.h && m.y + m.h > enemy.y) {
                 enemy.alive = false;
+                explosiones.push({
+                    x: enemy.x,
+                    y: enemy.y,
+                    frame: 0
+                });
                 launcher.misiles.splice(i, 1);
                 i--;
                 score += 10;
@@ -170,6 +181,17 @@ function draw() {
             ctx.drawImage(enemiespic1, enemy.x, enemy.y, enemy.w, enemy.h);
         }
     }
+    for (let i = 0; i < explosiones.length; i++) {
+        const ex = explosiones[i];
+        ctx.drawImage(explosionImage, ex.x, ex.y, 50, 50);
+        ex.frame++;
+
+        if (ex.frame > 15) {
+            explosiones.splice(i, 1);
+            i--;
+        }
+    }
+
 
     // Colisión con el jugador (Game Over)
     for (let i = 0; i < enemigos.length; i++) {
