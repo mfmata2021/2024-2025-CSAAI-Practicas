@@ -22,6 +22,15 @@ body {
     border: #000 2px solid;
 }
 
+.botones-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    /* para que se acomoden si hay poco espacio */
+}
+
 .boton {
     color: pink;
     font-size: 40px;
