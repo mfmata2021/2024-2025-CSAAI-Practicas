@@ -6,11 +6,11 @@ function initCanvas() {
     var enemiespic2 = new Image(); // enemigo 2
 
     // backgroundImage y naveImage
-    backgroundImage.src = "P3/background.jpg"; //Background picture
-    naveImage.src = "P3/nave_rosa.png";
+    backgroundImage.src = "background.jpg"; //Background picture
+    naveImage.src = "nave_rosa.png";
     // Enemigos fotos
-    enemiespic1.src = "P3/enemigos_rosa.png";
-    enemiespic2.src = "P3/enemigos_rosa.png";
+    enemiespic1.src = "enemigos_rosa.png";
+    enemiespic2.src = "enemigos_rosa.png";
 
     // width and height (canvas)
     var cW = ctx.canvas.width; // 700px 
