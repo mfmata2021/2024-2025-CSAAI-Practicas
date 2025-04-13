@@ -15,8 +15,8 @@ enemiespic1.src = "enemigos_rosa.png";
 explosionImage.src = "explosion.png";
 
 // Cargar sonidos
-const disparoAudio = new Audio('audio/disparo.mp3');
-const explosionAudio = new Audio('audio/explosion.mp3');
+const disparoAudio = new Audio('disparo.mp3');
+const explosionAudio = new Audio('explosion.mp3');
 
 // Nave del jugador
 const launcher = {
