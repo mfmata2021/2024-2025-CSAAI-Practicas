@@ -88,10 +88,6 @@ function initCanvas() {
                 this.x -= 5;
             } else if (this.direccion === 'right') {
                 this.x += 5;
-            } else if (this.direccion === "downArrow") {
-                this.y += 5;
-            } else if (this.direccion === "upArrow") {
-                this.y -= 5;
             }
             ctx.fillStyle = this.bg;
             ctx.drawImage(backgroundImage, 10, 10); // background image
