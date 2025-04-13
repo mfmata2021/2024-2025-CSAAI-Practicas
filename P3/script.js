@@ -206,25 +206,6 @@ function initCanvas() {
         }
     });
 
-    document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 38) // up arrow
-        {
-            launcher.direccion = 'upArrow';
-            if (launcher.y < cH * .2 - 80) {
-                launcher.y += 0;
-                launcher.direccion = '';
-            }
-        }
-    });
-
-    document.addEventListener('keyup', function (event) {
-        if (event.keyCode == 38) // up arrow
-        {
-            launcher.y -= 0;
-            launcher.direccion = '';
-        }
-    });
-
 
 
     document.addEventListener('keydown', function (event) {
