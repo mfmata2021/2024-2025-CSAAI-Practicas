@@ -84,9 +84,9 @@ function initCanvas() {
         }
 
         this.render = function () {
-            if (this.direccion === 'left') {
+            if (this.direccion === 'Izquierda') {
                 this.x -= 5;
-            } else if (this.direccion === 'right') {
+            } else if (this.direccion === 'Derecha') {
                 this.x += 5;
             }
             ctx.fillStyle = this.bg;
