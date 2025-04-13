@@ -5,14 +5,16 @@ const ctx = canvas.getContext('2d');
 const backgroundImage = new Image();
 const naveImage = new Image();
 const enemiespic1 = new Image();
-const enemiespic2 = new Image();
 
 backgroundImage.src = "background.jpg";
 naveImage.src = "nave_rosa.png";
 enemiespic1.src = "enemigos_rosa.png";
-enemiespic2.src = "enemigos_rosa.png";
 
-// Inicializar variables
+// Cargar sonidos
+const disparoAudio = new Audio('audio/disparo.mp3');
+const explosionAudio = new Audio('audio/explosion.mp3');
+
+// Nave del jugador
 const launcher = {
     x: canvas.width / 2 - 25,
     y: canvas.height - 100,
@@ -22,7 +24,7 @@ const launcher = {
     misiles: []
 };
 
-let score = 0; // Puntuación inicial
+let score = 0;
 let gameOver = false;
 let victory = false;
 
@@ -32,8 +34,9 @@ let enemyWidth = 50;
 let enemyHeight = 50;
 let rows = 3;
 let cols = 8;
+let enemySpeed = 1;
+let enemyDirection = 1;
 
-// Inicializar enemigos
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         enemigos.push({
@@ -46,11 +49,7 @@ for (let i = 0; i < rows; i++) {
     }
 }
 
-// Cargar sonidos
-const disparoAudio = new Audio('disparo.mp3');
-const explosionAudio = new Audio('explosion.mp3');
-
-// Evento de teclado
+// Eventos de teclado
 document.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowLeft') {
         launcher.direccion = 'Izquierda';
@@ -67,22 +66,31 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
-// Función para disparar
+// Botones táctiles
+document.getElementById('Izquierda').addEventListener('mousedown', () => launcher.direccion = 'Izquierda');
+document.getElementById('Derecha').addEventListener('mousedown', () => launcher.direccion = 'Derecha');
+document.getElementById('Disparar').addEventListener('click', disparar);
+document.getElementById('Izquierda').addEventListener('mouseup', () => launcher.direccion = '');
+document.getElementById('Derecha').addEventListener('mouseup', () => launcher.direccion = '');
+
+// Disparo
 function disparar() {
-    if (gameOver || victory) return; // No dispara si el juego terminó
+    if (gameOver || victory) return;
     launcher.misiles.push({
         x: launcher.x + launcher.w / 2 - 2,
         y: launcher.y,
         w: 4,
         h: 10
     });
-
-    // Reproducir sonido de disparo
+    disparoAudio.currentTime = 0;
     disparoAudio.play();
 }
 
-// Dibujar y animar
+// Dibujo y animación
 function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
     if (gameOver) {
         ctx.fillStyle = 'red';
         ctx.font = '30px Arial';
@@ -97,44 +105,61 @@ function draw() {
         return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-
-    // Dibujar la nave
+    // Dibujar nave
     ctx.drawImage(naveImage, launcher.x, launcher.y, launcher.w, launcher.h);
 
-    // Mover la nave
+    // Movimiento de la nave
     if (launcher.direccion === 'Izquierda' && launcher.x > 0) {
         launcher.x -= 5;
     } else if (launcher.direccion === 'Derecha' && launcher.x + launcher.w < canvas.width) {
         launcher.x += 5;
     }
 
-    // Dibujar y mover misiles
+    // Misiles
     ctx.fillStyle = 'red';
     for (let i = 0; i < launcher.misiles.length; i++) {
         const m = launcher.misiles[i];
         ctx.fillRect(m.x, m.y, m.w, m.h);
         m.y -= 10;
 
-        // Eliminar misil si se sale del canvas
+        // Eliminar si sale de canvas
         if (m.y < 0) {
             launcher.misiles.splice(i, 1);
-            i--; // Ajustar índice
+            i--;
         }
 
         // Colisión con enemigos
         for (let j = 0; j < enemigos.length; j++) {
             const enemy = enemigos[j];
             if (enemy.alive && m.x < enemy.x + enemy.w && m.x + m.w > enemy.x && m.y < enemy.y + enemy.h && m.y + m.h > enemy.y) {
-                // Colisión detectada
                 enemy.alive = false;
-                launcher.misiles.splice(i, 1); // Eliminar el misil
-                score += 10; // Aumentar puntuación
-                explosionAudio.play(); // Reproducir sonido de explosión
-                checkVictory(); // Comprobar si se han destruido todos los enemigos
+                launcher.misiles.splice(i, 1);
+                i--;
+                score += 10;
+                explosionAudio.currentTime = 0;
+                explosionAudio.play();
+                enemySpeed += 0.05;
+                checkVictory();
                 break;
             }
+        }
+    }
+
+    // Movimiento de enemigos
+    let shouldChangeDirection = false;
+    for (let i = 0; i < enemigos.length; i++) {
+        const enemy = enemigos[i];
+        if (!enemy.alive) continue;
+        enemy.x += enemySpeed * enemyDirection;
+        if (enemy.x + enemy.w >= canvas.width || enemy.x <= 0) {
+            shouldChangeDirection = true;
+        }
+    }
+
+    if (shouldChangeDirection) {
+        enemyDirection *= -1;
+        for (let i = 0; i < enemigos.length; i++) {
+            enemigos[i].y += 20;
         }
     }
 
@@ -146,7 +171,7 @@ function draw() {
         }
     }
 
-    // Verificar si algún enemigo llegó al fondo
+    // Colisión con el jugador (Game Over)
     for (let i = 0; i < enemigos.length; i++) {
         const enemy = enemigos[i];
         if (enemy.alive && enemy.y + enemy.h >= launcher.y) {
@@ -160,22 +185,15 @@ function draw() {
     ctx.font = '20px Arial';
     ctx.fillText('Puntuación: ' + score, 10, 30);
 
-    requestAnimationFrame(draw); // Llamada recursiva para continuar con la animación
+    requestAnimationFrame(draw);
 }
 
-// Comprobar si todos los enemigos han sido destruidos
 function checkVictory() {
-    let allDead = true;
-    for (let i = 0; i < enemigos.length; i++) {
-        if (enemigos[i].alive) {
-            allDead = false;
-            break;
-        }
-    }
+    const allDead = enemigos.every(e => !e.alive);
     if (allDead) {
         victory = true;
     }
 }
 
-// Iniciar el juego
+// Iniciar juego
 draw();
