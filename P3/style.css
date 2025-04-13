@@ -6,6 +6,7 @@ body {
 .container {
     width: 800px;
     margin: 0 auto;
+    align-items: center;
 }
 
 .barra {
@@ -28,6 +29,7 @@ body {
     cursor: pointer;
     border-radius: 8px;
     border: 2px solid rgb(173, 37, 121);
+    justify-content: center;
 }
 
 .boton:hover {
