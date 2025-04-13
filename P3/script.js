@@ -72,10 +72,10 @@ function initCanvas() {
             this.w = 100,
             this.h = 100,
             this.direccion,
-            this.bg = "yellow", // bullet color (color de bala)
+            this.bg = "white", // bullet color (color de bala)
             this.misiles = [];
 
-        // If you wanted to use different fonts or messages for the player losing you can change it accordingly.
+
         this.gameStatus = {
             over: false,
             message: "",
@@ -164,14 +164,13 @@ function initCanvas() {
     }
     var animateInterval = setInterval(animate, 6);
 
-    var left_btn = document.getElementById('left_btn');
-    var right_btn = document.getElementById('right_btn');
-    var fire_btn = document.getElementById('fire_btn');
+    var izquierda = document.getElementById('Izquierda');
+    var derecha = document.getElementById('Derecha');
+    var disparo = document.getElementById('Disparar');
 
     document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 37) // left arrow
-        {
-            launcher.direccion = 'left';
+        if (event.code === "ArrowLeft") {
+            launcher.direccion = 'Izquierda';
             if (launcher.x < cW * .2 - 130) {
                 launcher.x += 0;
                 launcher.direccion = '';
@@ -180,16 +179,15 @@ function initCanvas() {
     });
 
     document.addEventListener('keyup', function (event) {
-        if (event.keyCode == 37) {
+        if (event.code === "ArrowLeft") {
             launcher.x += 0;
             launcher.direccion = '';
         }
     });
 
     document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 39) // right arrow
-        {
-            launcher.direccion = 'right';
+        if (event.code === "ArrowRight") {
+            launcher.direccion = 'Derecha';
             if (launcher.x > cW - 110) {
                 launcher.x -= 0;
                 launcher.direccion = '';
@@ -199,8 +197,7 @@ function initCanvas() {
     });
 
     document.addEventListener('keyup', function (event) {
-        if (event.keyCode == 39) // right arrow
-        {
+        if (event.code === "ArrowRight") {
             launcher.x -= 0;
             launcher.direccion = '';
         }
@@ -216,28 +213,28 @@ function initCanvas() {
     });
 
     // control buttons
-    left_btn.addEventListener('mousedown', function (event) {
-        launcher.direccion = 'left';
+    izquierda.addEventListener('mousedown', function (event) {
+        launcher.direccion = 'Izquierda';
     });
 
-    left_btn.addEventListener('mouseup', function (event) {
+    izquierda.addEventListener('mouseup', function (event) {
         launcher.direccion = '';
     });
 
-    right_btn.addEventListener('mousedown', function (event) {
-        launcher.direccion = 'right';
+    derecha.addEventListener('mousedown', function (event) {
+        launcher.direccion = 'Derecha';
     });
 
-    right_btn.addEventListener('mouseup', function (event) {
+    derecha.addEventListener('mouseup', function (event) {
         launcher.direccion = '';
     });
     //This code below fires bullets (balas)
-    fire_btn.addEventListener('mousedown', function (event) {
+    disparo.addEventListener('mousedown', function (event) {
         launcher.misiles.push({ x: launcher.x + launcher.w * .5, y: launcher.y, w: 3, h: 10 });
     });
     // This fires when clicking on space button from keyboard
     document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 32) {
+        if (event.code == "Space") {
             launcher.misiles.push({ x: launcher.x + launcher.w * .5, y: launcher.y, w: 3, h: 10 });
         }
     });
