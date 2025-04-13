@@ -72,7 +72,7 @@ function initCanvas() {
             this.w = 100,
             this.h = 100,
             this.direccion,
-            this.bg = "white", // bullet color (color de bala)
+            this.bg = "yellow", // bullet color (color de bala)
             this.misiles = [];
 
         // If you wanted to use different fonts or messages for the player losing you can change it accordingly.
@@ -229,23 +229,7 @@ function initCanvas() {
         }
     });
 
-    document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 40) // down arrow
-        {
-            launcher.direccion = 'downArrow';
-            if (launcher.y > cH - 110) {
-                launcher.y -= 0;
-                launcher.direccion = '';
-            }
-        }
-    });
-    document.addEventListener('keyup', function (event) {
-        if (event.keyCode == 40) // down arrow
-        {
-            launcher.y += 0;
-            launcher.direccion = '';
-        }
-    });
+
 
     document.addEventListener('keydown', function (event) {
         if (event.keyCode == 80) // restart game
