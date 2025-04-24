@@ -65,6 +65,7 @@ const generateGame = () => {
 
     // Actualizamos el selector a la nueva referencia
     selectors.tablero = newTablero
+    attachCardFlipEvent()
 
 }
 
@@ -248,6 +249,18 @@ const attachCardListeners = () => {
 
 generateGame()
 attachEventListeners()
+
+const attachCardFlipEvent = () => {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const cardParent = e.target.parentElement
+            if (!cardParent.classList.contains('flipped')) {
+                flipCard(cardParent)
+            }
+        })
+    })
+}
+
 
 // Por si cambia las dimensiones
 selectors.dimensionSelect.addEventListener('change', () => {
