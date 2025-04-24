@@ -212,3 +212,6 @@ const startGame = () => {
         selectors.timer.innerText = `tiempo: ${state.totalTime} sec`
     }, 1000)
 }
+selectors.dimensionSelect.addEventListener('change', () => {
+    generateGame()
+})
