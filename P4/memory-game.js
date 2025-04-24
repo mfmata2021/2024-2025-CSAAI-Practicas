@@ -231,3 +231,4 @@ selectors.reiniciar.addEventListener('click', () => resetearJuego())
 selectors.comenzar.addEventListener('click', () => startGame())
 
 generateGame()
+attachEventListeners()
