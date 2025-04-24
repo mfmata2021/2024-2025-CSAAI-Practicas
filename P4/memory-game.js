@@ -103,6 +103,25 @@ const shuffle = array => {
     return clonedArray
 }
 
+const attachEventListeners = () => {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+            if (!card.classList.contains('flipped')) {
+                flipCard(card)
+            }
+        })
+    })
+
+    selectors.comenzar.addEventListener('click', () => {
+        if (!selectors.comenzar.classList.contains('disabled')) {
+            startGame()
+        }
+    })
+
+    selectors.reiniciar.addEventListener('click', resetearJuego)
+
+    selectors.dimensionSelect.addEventListener('change', resetearJuego)
+}
 
 const flipCard = card => {
     // Sumamos uno al contador de cartas giradas
@@ -224,11 +243,6 @@ const attachCardListeners = () => {
         card.addEventListener('click', () => flipCard(card))
     })
 }
-selectors.dimensionSelect.addEventListener('change', () => resetearJuego())
-
-selectors.reiniciar.addEventListener('click', () => resetearJuego())
-
-selectors.comenzar.addEventListener('click', () => startGame())
 
 generateGame()
 attachEventListeners()
