@@ -104,26 +104,6 @@ const shuffle = array => {
 }
 
 
-//EVENTOS
-
-const attachEventListeners = () => {
-    document.addEventListener('click', event => {
-        // Del evento disparado vamos a obtener alguna información útil
-        // Como el elemento que ha disparado el evento y el contenedor que lo contiene
-        const eventTarget = event.target
-        const eventParent = eventTarget.parentElement
-
-        // Cuando se trata de una carta que no está girada, le damos la vuelta para mostrarla
-        if (eventTarget.className.includes('card') && !eventParent.className.includes('flipped')) {
-            flipCard(eventParent)
-            // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
-            // empezar el juego
-        } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
-            startGame()
-        }
-    })
-}
-
 const flipCard = card => {
     // Sumamos uno al contador de cartas giradas
     state.flippedCards++
