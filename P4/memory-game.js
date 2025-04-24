@@ -137,7 +137,7 @@ const attachEventListeners = () => {
             flipCard(eventParent)
             // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
             // empezar el juego
-        } else if (eventTarget.nodeName === 'inicio' && !eventTarget.className.includes('disabled')) {
+        } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
             startGame()
         }
     })
