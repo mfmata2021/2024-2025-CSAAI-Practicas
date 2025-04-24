@@ -8,6 +8,7 @@ const selectors = {
     dimensionSelect: document.getElementById('dimension'),
     win: document.querySelector('.win')
 }
+let tablero = null;
 
 const state = {
     gameStarted: false,
@@ -101,32 +102,6 @@ const shuffle = array => {
 
     return clonedArray
 }
-function resetearJuego() {
-    function resetearJuego() {
-        // Resetear estado del juego
-        state.gameStarted = false
-        state.flippedCards = 0
-        state.totalFlips = 0
-        state.totalTime = 0
-
-        // Parar temporizador si está corriendo
-        clearInterval(state.loop)
-
-        // Regenerar el tablero con la dimensión actual
-        generateGame()
-
-        // Actualizar visualmente los contadores
-        selectors.movimientos.textContent = '0 movimientos'
-        selectors.timer.textContent = 'tiempo: 0 sec'
-
-        // Quitar mensaje de victoria si estaba
-        selectors.gridContainer.classList.remove('flipped')
-        selectors.win.innerHTML = ''
-
-        // Habilitar de nuevo el botón de comenzar
-        selectors.comenzar.classList.remove('disabled')
-    }
-}
 
 
 //EVENTOS
@@ -148,12 +123,6 @@ const attachEventListeners = () => {
         }
     })
 }
-
-// Generamos el juego
-generateGame()
-
-// Asignamos las funciones de callback para determinados eventos
-attachEventListeners()
 
 const flipCard = card => {
     // Sumamos uno al contador de cartas giradas
@@ -224,6 +193,7 @@ const flipBackCards = () => {
     state.flippedCards = 0
 }
 
+
 const startGame = () => {
     // Iniciamos el estado de juego
     state.gameStarted = true
@@ -240,13 +210,44 @@ const startGame = () => {
         selectors.timer.innerText = `tiempo: ${state.totalTime} sec`
     }, 1000)
 }
-selectors.dimensionSelect.addEventListener('change', () => {
-    resetearJuego()
-})
+const resetearJuego = () => {
 
+    // Resetear estado del juego
+    state.gameStarted = false
+    state.flippedCards = 0
+    state.totalFlips = 0
+    state.totalTime = 0
 
-selectors.reiniciar.addEventListener('click', () => {
-    resetearJuego();
-})
+    // Parar temporizador si está corriendo
+    clearInterval(state.loop)
 
+    // Regenerar el tablero con la dimensión actual
+    generateGame()
 
+    // Actualizar visualmente los contadores
+    selectors.movimientos.textContent = '0 movimientos'
+    selectors.timer.textContent = 'tiempo: 0 sec'
+
+    // Quitar mensaje de victoria si estaba
+    selectors.gridContainer.classList.remove('flipped')
+    selectors.win.innerHTML = ''
+
+    // Habilitar de nuevo el botón de comenzar
+    selectors.comenzar.classList.remove('disabled')
+
+    generateGame()
+
+}
+
+const attachCardListeners = () => {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => flipCard(card))
+    })
+}
+selectors.dimensionSelect.addEventListener('change', () => resetearJuego())
+
+selectors.reiniciar.addEventListener('click', () => resetearJuego())
+
+selectors.comenzar.addEventListener('click', () => startGame())
+
+generateGame()
