@@ -3,7 +3,8 @@ const selectors = {
     tablero: document.querySelector('.tablero'),
     movimientos: document.querySelector('.movimientos'),
     timer: document.querySelector('.timer'),
-    comenzar: document.querySelector('button'),
+    comenzar: document.getElementById('inicio'),
+    reiniciar: document.getElementById('reinicio'),
     dimensionSelect: document.getElementById('dimension'),
     win: document.querySelector('.win')
 }
@@ -100,6 +101,27 @@ const shuffle = array => {
 
     return clonedArray
 }
+function resetearJuego() {
+    // 1. Leer la dimensión actual
+    const dimension = parseInt(document.dimensionSelect.value);
+
+    // 2. Reiniciar contadores (movimientos, tiempo, etc.)
+    movimientos = 0;
+    paresEncontrados = 0;
+    cartasVolteadas = [];
+
+    // Si tienes tiempo:
+    tiempo = 0;
+    clearInterval(intervaloTiempo); // Si usas setInterval
+    // iniciarContadorTiempo(); // Opcional, reiniciar el reloj
+
+    // 3. Volver a generar el tablero con la dimensión actual
+    crearTablero(dimension);
+
+    // 4. (Opcional) Actualizar visualmente los contadores
+    document.movimientos.textContent = '0';
+    document.timer.textContent = '0s';
+}
 
 //EVENTOS
 
@@ -115,7 +137,7 @@ const attachEventListeners = () => {
             flipCard(eventParent)
             // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
             // empezar el juego
-        } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
+        } else if (eventTarget.nodeName === 'inicio' && !eventTarget.className.includes('disabled')) {
             startGame()
         }
     })
@@ -215,3 +237,9 @@ const startGame = () => {
 selectors.dimensionSelect.addEventListener('change', () => {
     generateGame()
 })
+
+
+reiniciar.addEventListener('click', () => {
+    resetearJuego();
+});
+
