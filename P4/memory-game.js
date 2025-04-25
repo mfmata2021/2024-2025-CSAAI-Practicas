@@ -8,7 +8,7 @@ const selectors = {
     dimensionSelect: document.getElementById('dimension'),
     win: document.querySelector('.win')
 }
-let tablero = null;
+
 
 const state = {
     gameStarted: false,
@@ -63,6 +63,11 @@ const generateGame = () => {
     //-- Por último, vamos a inyectar el código html que hemos generado dentro de el contenedor
     // para el tablero de juego.
     selectors.tablero.replaceWith(parser.querySelector('.tablero'))
+
+    const newTablero = parser.querySelector('.tablero')
+    selectors.tablero.replaceWith(newTablero)
+    selectors.tablero = newTablero // <-- ¡esto es clave!
+
 }
 
 const pickRandom = (array, items) => {
