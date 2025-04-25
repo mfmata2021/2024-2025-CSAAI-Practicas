@@ -200,13 +200,16 @@ const flipCard = card => {
             // Le damos la vuelta al tablero
             selectors.gridContainer.classList.add('flipped')
             // Le mostramos las estadísticas del juego
-            selectors.win.innerHTML = `
+            setTimeout(() => {
+                selectors.win.innerHTML = `
                 <span class="win-text">
                     ¡Has ganado!<br />
                     con <span class="highlight">${state.totalFlips}</span> movimientos<br />
                     en un tiempo de <span class="highlight">${state.totalTime}</span> segundos
                 </span>
+
             `
+            }, 500);
             // Paramos el loop porque el juego ha terminado
             clearInterval(state.loop)
         }, 1000)
