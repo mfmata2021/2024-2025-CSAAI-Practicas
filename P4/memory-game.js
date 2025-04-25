@@ -1,6 +1,6 @@
 const selectors = {
     gridContainer: document.querySelector('.grid-container'),
-    tablero: document.querySelector('.tablero'),
+    tablero: document.getElementById('tablero'),
     movimientos: document.querySelector('.movimientos'),
     timer: document.querySelector('.timer'),
     comenzar: document.getElementById('inicio'),
@@ -43,31 +43,24 @@ const generateGame = () => {
     // están desordenadas.
     const items = shuffle([...picks, ...picks])
 
-    //-- Vamos a utilizar una función de mapeo para generar 
-    //  todas las cartas en función de las dimensiones
-    const cards = `
-        <div class="tablero" style="grid-template-columns: repeat(${dimensions}, auto)">
-            ${items.map(item => `
-                <div class="card">
-                    <div class="card-front"></div>
-                    <div class="card-back">${item}</div>
-                </div>
-            `).join('')}
-       </div>
-    `
+    selectors.tablero.innerHTML = ''
+    selectors.tablero.className = 'tablero' // restaurar estilos por si se pierden
+    selectors.tablero.style.gridTemplateColumns = `repeat(${dimensions}, auto)`
 
-    //-- Vamos a utilizar un parser para transformar la cadena que hemos generado
-    // en código html.
-    const parser = new DOMParser().parseFromString(cards, 'text/html')
-    const newTablero = parser.querySelector('.tablero')
-    // Reemplazamos el tablero anterior
-    selectors.tablero.replaceWith(newTablero)
+    items.forEach(item => {
+        const card = document.createElement('div')
+        card.className = 'card'
 
-    // Actualizamos el selector a la nueva referencia
-    selectors.tablero = newTablero
+        card.innerHTML = `
+            <div class="card-front"></div>
+            <div class="card-back">${item}</div>
+        `
+        selectors.tablero.appendChild(card)
+    })
+
     attachCardFlipEvent()
-
 }
+
 
 const pickRandom = (array, items) => {
     // La sintaxis de tres puntos nos sirve para hacer una copia del array
