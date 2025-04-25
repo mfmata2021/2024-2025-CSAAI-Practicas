@@ -59,14 +59,10 @@ const generateGame = () => {
     //-- Vamos a utilizar un parser para transformar la cadena que hemos generado
     // en código html.
     const parser = new DOMParser().parseFromString(cards, 'text/html')
-    const newTablero = parser.querySelector('.tablero')
-    // Reemplazamos el tablero anterior
-    selectors.tablero.replaceWith(newTablero)
 
-    // Actualizamos el selector a la nueva referencia
-    selectors.tablero = newTablero
-    attachCardFlipEvent()
-
+    //-- Por último, vamos a inyectar el código html que hemos generado dentro de el contenedor
+    // para el tablero de juego.
+    selectors.tablero.replaceWith(parser.querySelector('.tablero'))
 }
 
 const pickRandom = (array, items) => {
@@ -106,51 +102,26 @@ const shuffle = array => {
 
     return clonedArray
 }
-const resetearJuego = () => {
 
-    // Resetear estado del juego
-    state.gameStarted = false
-    state.flippedCards = 0
-    state.totalFlips = 0
-    state.totalTime = 0
 
-    // Parar temporizador si está corriendo
-    clearInterval(state.loop)
-
-    // Regenerar el tablero con la dimensión actual
-    generateGame()
-
-    // Actualizar visualmente los contadores
-    selectors.movimientos.textContent = '0 movimientos'
-    selectors.timer.textContent = 'tiempo: 0 sec'
-
-    // Quitar mensaje de victoria si estaba
-    selectors.gridContainer.classList.remove('flipped')
-    selectors.win.innerHTML = ''
-
-    // Habilitar de nuevo el botón de comenzar
-    selectors.comenzar.classList.remove('disabled')
-
-}
+//EVENTOS
 
 const attachEventListeners = () => {
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
-            if (!card.classList.contains('flipped')) {
-                flipCard(card)
-            }
-        })
-    })
+    document.addEventListener('click', event => {
+        // Del evento disparado vamos a obtener alguna información útil
+        // Como el elemento que ha disparado el evento y el contenedor que lo contiene
+        const eventTarget = event.target
+        const eventParent = eventTarget.parentElement
 
-    selectors.comenzar.addEventListener('click', () => {
-        if (!selectors.comenzar.classList.contains('disabled')) {
+        // Cuando se trata de una carta que no está girada, le damos la vuelta para mostrarla
+        if (eventTarget.className.includes('card') && !eventParent.className.includes('flipped')) {
+            flipCard(eventParent)
+            // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
+            // empezar el juego
+        } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
             startGame()
         }
     })
-
-    selectors.reiniciar.addEventListener('click', resetearJuego)
-
-    selectors.dimensionSelect.addEventListener('change', resetearJuego)
 }
 
 const flipCard = card => {
@@ -239,34 +210,44 @@ const startGame = () => {
         selectors.timer.innerText = `tiempo: ${state.totalTime} sec`
     }, 1000)
 }
+const resetearJuego = () => {
 
+    // Resetear estado del juego
+    state.gameStarted = false
+    state.flippedCards = 0
+    state.totalFlips = 0
+    state.totalTime = 0
+
+    // Parar temporizador si está corriendo
+    clearInterval(state.loop)
+
+    // Regenerar el tablero con la dimensión actual
+    generateGame()
+
+    // Actualizar visualmente los contadores
+    selectors.movimientos.textContent = '0 movimientos'
+    selectors.timer.textContent = 'tiempo: 0 sec'
+
+    // Quitar mensaje de victoria si estaba
+    selectors.gridContainer.classList.remove('flipped')
+    selectors.win.innerHTML = ''
+
+    // Habilitar de nuevo el botón de comenzar
+    selectors.comenzar.classList.remove('disabled')
+
+    generateGame()
+
+}
 
 const attachCardListeners = () => {
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', () => flipCard(card))
     })
 }
+selectors.dimensionSelect.addEventListener('change', () => resetearJuego())
+
+selectors.reiniciar.addEventListener('click', () => resetearJuego())
+
+selectors.comenzar.addEventListener('click', () => startGame())
 
 generateGame()
-attachEventListeners()
-
-const attachCardFlipEvent = () => {
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            const cardParent = e.target.parentElement
-            if (!cardParent.classList.contains('flipped')) {
-                flipCard(cardParent)
-            }
-        })
-    })
-}
-
-
-// Por si cambia las dimensiones
-selectors.dimensionSelect.addEventListener('change', () => {
-    resetearJuego()
-})
-
-selectors.reiniciar.addEventListener('click', () => {
-    resetearJuego()
-})
