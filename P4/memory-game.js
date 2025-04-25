@@ -1,6 +1,6 @@
 const selectors = {
     gridContainer: document.querySelector('.grid-container'),
-    tablero: document.getElementById('tablero'),
+    tablero: document.querySelector('.tablero'),
     movimientos: document.querySelector('.movimientos'),
     timer: document.querySelector('.timer'),
     comenzar: document.getElementById('inicio'),
@@ -43,24 +43,31 @@ const generateGame = () => {
     // están desordenadas.
     const items = shuffle([...picks, ...picks])
 
-    selectors.tablero.innerHTML = ''
-    selectors.tablero.className = 'tablero' // restaurar estilos por si se pierden
-    selectors.tablero.style.gridTemplateColumns = `repeat(${dimensions}, auto)`
+    //-- Vamos a utilizar una función de mapeo para generar 
+    //  todas las cartas en función de las dimensiones
+    const cards = `
+        <div class="tablero" style="grid-template-columns: repeat(${dimensions}, auto)">
+            ${items.map(item => `
+                <div class="card">
+                    <div class="card-front"></div>
+                    <div class="card-back">${item}</div>
+                </div>
+            `).join('')}
+       </div>
+    `
 
-    items.forEach(item => {
-        const card = document.createElement('div')
-        card.className = 'card'
+    //-- Vamos a utilizar un parser para transformar la cadena que hemos generado
+    // en código html.
+    const parser = new DOMParser().parseFromString(cards, 'text/html')
+    const newTablero = parser.querySelector('.tablero')
+    // Reemplazamos el tablero anterior
+    selectors.tablero.replaceWith(newTablero)
 
-        card.innerHTML = `
-            <div class="card-front"></div>
-            <div class="card-back">${item}</div>
-        `
-        selectors.tablero.appendChild(card)
-    })
-
+    // Actualizamos el selector a la nueva referencia
+    selectors.tablero = newTablero
     attachCardFlipEvent()
-}
 
+}
 
 const pickRandom = (array, items) => {
     // La sintaxis de tres puntos nos sirve para hacer una copia del array
@@ -135,13 +142,16 @@ const attachEventListeners = () => {
         })
     })
 
-    selectors.comenzar.addEventListener('click', startGame)
+    selectors.comenzar.addEventListener('click', () => {
+        if (!selectors.comenzar.classList.contains('disabled')) {
+            startGame()
+        }
+    })
+
+    selectors.reiniciar.addEventListener('click', resetearJuego)
+
+    selectors.dimensionSelect.addEventListener('change', resetearJuego)
 }
-
-selectors.reiniciar.addEventListener('click', resetearJuego)
-
-selectors.dimensionSelect.addEventListener('change', resetearJuego)
-
 
 const flipCard = card => {
     // Sumamos uno al contador de cartas giradas
@@ -251,3 +261,12 @@ const attachCardFlipEvent = () => {
     })
 }
 
+
+// Por si cambia las dimensiones
+selectors.dimensionSelect.addEventListener('change', () => {
+    resetearJuego()
+})
+
+selectors.reiniciar.addEventListener('click', () => {
+    resetearJuego()
+})
