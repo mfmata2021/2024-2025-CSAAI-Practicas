@@ -1,6 +1,6 @@
 const selectors = {
     gridContainer: document.querySelector('.grid-container'),
-    tablero: document.getElementById('tablero'),
+    tablero: document.querySelector('.tablero'),
     movimientos: document.querySelector('.movimientos'),
     timer: document.querySelector('.timer'),
     comenzar: document.getElementById('inicio'),
