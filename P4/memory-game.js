@@ -66,7 +66,7 @@ const generateGame = () => {
     // Actualizamos el selector a la nueva referencia
     selectors.tablero = newTablero
 
-
+    attachCardListeners()
 }
 
 const pickRandom = (array, items) => {
@@ -250,16 +250,16 @@ const attachCardListeners = () => {
 generateGame()
 attachEventListeners()
 
-const attachCardFlipEvent = () => {
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            const cardParent = e.target.parentElement
-            if (!cardParent.classList.contains('flipped')) {
-                flipCard(cardParent)
-            }
-        })
-    })
-}
+// const attachCardFlipEvent = () => {
+//     document.querySelectorAll('.card').forEach(card => {
+//         card.addEventListener('click', (e) => {
+//             const cardParent = e.target.parentElement
+//             if (!cardParent.classList.contains('flipped')) {
+//                 flipCard(cardParent)
+//             }
+//         })
+//     })
+// }
 
 
 // Por si cambia las dimensiones
