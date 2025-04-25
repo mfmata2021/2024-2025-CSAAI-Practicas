@@ -65,7 +65,7 @@ const generateGame = () => {
 
     // Actualizamos el selector a la nueva referencia
     selectors.tablero = newTablero
-    attachCardFlipEvent()
+
 
 }
 
