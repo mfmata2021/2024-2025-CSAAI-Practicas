@@ -135,16 +135,13 @@ const attachEventListeners = () => {
         })
     })
 
-    selectors.comenzar.addEventListener('click', () => {
-        if (!selectors.comenzar.classList.contains('disabled')) {
-            startGame()
-        }
-    })
-
-    selectors.reiniciar.addEventListener('click', resetearJuego)
-
-    selectors.dimensionSelect.addEventListener('change', resetearJuego)
+    selectors.comenzar.addEventListener('click', startGame)
 }
+
+selectors.reiniciar.addEventListener('click', resetearJuego)
+
+selectors.dimensionSelect.addEventListener('change', resetearJuego)
+
 
 const flipCard = card => {
     // Sumamos uno al contador de cartas giradas
@@ -254,12 +251,3 @@ const attachCardFlipEvent = () => {
     })
 }
 
-
-// Por si cambia las dimensiones
-selectors.dimensionSelect.addEventListener('change', () => {
-    resetearJuego()
-})
-
-selectors.reiniciar.addEventListener('click', () => {
-    resetearJuego()
-})
