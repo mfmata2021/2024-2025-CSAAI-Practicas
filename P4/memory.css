@@ -129,8 +129,3 @@ button {
 .highlight {
     color: #6f00fc;
 }
-
-.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
