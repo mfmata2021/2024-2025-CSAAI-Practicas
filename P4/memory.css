@@ -64,11 +64,11 @@ button {
 }
 
 .grid-container.flipped .tablero {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) rotateZ(50deg);
 }
 
 .grid-container.flipped .win {
-    transform: rotateY(0deg);
+    transform: rotateY(0deg) rotateZ(0);
 }
 
 .card {
