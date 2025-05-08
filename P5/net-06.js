@@ -76,6 +76,9 @@ function randomNumber(min, max) {
 
 // Dibujar la red en el canvas
 function drawNet(nnodes) {
+
+    console.log("Dibujando", nnodes.length, "nodos...");
+
     // Dibujamos las conexiones entre nodos
     nnodes.forEach(nodo => {
         nodo.conexiones.forEach(({ nodo: conexion, peso }) => {
@@ -106,10 +109,12 @@ function drawNet(nnodes) {
 // Función de calback para generar la red de manera aleatoria
 btnCNet.onclick = () => {
 
+    console.log("Generando red aleatoria...");
     // Generar red de nodos con congestión creada de manera aleatoria redAleatoria
     // Cada nodo tendrá un delay aleatorio para simular el envío de paquetes de datos
     redAleatoria = crearRedAleatoriaConCongestion(numNodos, nodeConnect);
 
+    console.log(redAleatoria);
     // Limpiamos el canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
