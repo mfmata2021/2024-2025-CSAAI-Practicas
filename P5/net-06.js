@@ -32,6 +32,79 @@ class Nodo {
         this.conexiones.push({ nodo, peso });
     }
 
+    // Método para saber si un nodo está en la lista de conexiones de otro
+    isconnected(idn) {
+
+        let isconnected = false;
+
+        this.conexiones.forEach(({ nodo: conexion, peso }) => {
+            if (idn == conexion.id) {
+                //console.log("id nodo conectado:" + conexion.id);
+                isconnected = true;
+            }
+        });
+
+        return isconnected;
+    }
+    // Método para saber la distancia entre dos nodos
+    node_distance(nx, ny) {
+
+        var a = nx - this.x;
+        var b = ny - this.y;
+
+        return Math.floor(Math.sqrt(a * a + b * b));
+
+    }
+    // Método para encontrar el nodo más alejado
+    far_node(nodos) {
+
+        let distn = 0;
+        let cnode = this.id;
+        let distaux = 0;
+        let pos = 0;
+        let npos = 0;
+
+        for (let nodo of nodos) {
+            distaux = this.node_distance(nodo.x, nodo.y);
+
+            if (distaux != 0 && distaux > distn) {
+                distn = distaux;
+                cnode = nodo.id;
+                npos = pos;
+            }
+
+            pos += 1;
+        }
+
+        return { pos: npos, id: cnode, distance: distn, };
+
+    }
+    // Método para encontrar el nodo más cercano
+    close_node(nodos) {
+
+        let far_node = this.far_node(nodos);
+        let cnode = far_node.id;
+        let distn = far_node.distance;
+        let distaux = 0;
+        let pos = 0;
+        let npos = 0;
+
+        for (let nodo of nodos) {
+            distaux = this.node_distance(nodo.x, nodo.y);
+
+            if (distaux != 0 && distaux <= distn) {
+                distn = distaux;
+                cnode = nodo.id;
+                npos = pos;
+            }
+
+            pos += 1;
+        }
+
+        return { pos: npos, id: cnode, distance: distn, }
+
+    }
+
 }
 
 // Función para generar una red aleatoria con nodos en diferentes estados de congestión
@@ -84,19 +157,24 @@ function crearRedAleatoriaConCongestion(numNodos, numConexiones) {
         nodos.push(new Nodo(i, x, y, delay)); // Generar un nuevo nodo y añadirlo a la lista de nodos de la red
     }
 
-    // Conectamos los nodos
-    for (let i = 0; i < numNodos; i++) {
-        nodoActual = nodos[i];
+    // Conectamos los nodos usando los más cercanos
+    for (let nodo of nodos) {
+        const clonedArray = [...nodos];
+
         for (let j = 0; j < numConexiones; j++) {
-            pickNode = Math.floor(Math.random() * numNodos);
-            nodoAleatorio = nodos[pickNode];
-            //peso = Math.random() * pipeRandomWeight; // Peso aleatorio para simular la distancia entre nodos
-            peso = pipeRandomWeight; // El mismo peso para todas las conexiones
-            nodoActual.conectar(nodoAleatorio, peso);
+            let close_node = nodo.close_node(clonedArray);
+
+            if (!nodo.isconnected(close_node.id) && !clonedArray[close_node.pos].isconnected(nodo.id)) {
+                nodo.conectar(clonedArray[close_node.pos], close_node.distance);
+            }
+
+            clonedArray.splice(close_node.pos, 1);
         }
     }
 
     return nodos;
+
+
 }
 
 // Función para generar un retardo aleatorio entre 0 y 1000 ms
