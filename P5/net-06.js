@@ -15,6 +15,10 @@ const pipeRandomWeight = 100; // No hay retardo entre nodos 100
 // Localizando elementos en el DOM
 const btnCNet = document.getElementById("btnCNet");
 const btnMinPath = document.getElementById("btnMinPath");
+const msgEstado = document.getElementById("msgEstado");
+const msgNodos = document.getElementById("msgNodos");
+const msgTiempo = document.getElementById("msgTiempo")
+
 
 // Clase para representar un nodo en el grafo
 class Nodo {
@@ -210,18 +214,17 @@ function drawNet(nnodes) {
 
     let nodoDesc; // Descripción del nodo
 
-    // Dibujamos los nodos
+    // Dibujar nodos
     nnodes.forEach(nodo => {
         ctx.beginPath();
         ctx.arc(nodo.x, nodo.y, nodeRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = ruta.includes(nodo) ? 'green' : 'blue';
         ctx.fill();
         ctx.stroke();
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
         ctx.textAlign = 'center';
-        nodoDesc = "N" + nodo.id + " delay " + Math.floor(nodo.delay);
-        ctx.fillText(nodoDesc, nodo.x, nodo.y + 5);
+        ctx.fillText(`N${nodo.id} (${Math.floor(nodo.delay)} ms)`, nodo.x, nodo.y + 5);
     });
 }
 // Función de calback para generar la red de manera aleatoria
@@ -232,12 +235,20 @@ btnCNet.onclick = () => {
     // Cada nodo tendrá un delay aleatorio para simular el envío de paquetes de datos
     redAleatoria = crearRedAleatoriaConCongestion(numNodos, nodeConnect);
 
+    if (!redAleatoria || redAleatoria.length === 0) {
+        msgEstado.textContent = "Error al generar la red."
+    }
+
     console.log(redAleatoria);
     // Limpiamos el canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Dibujar la red que hemos generado
     drawNet(redAleatoria);
+
+    msgEstado.textContent = "Red generada correctamente.";
+    msgNodos.textContent = `Número de nodos: ${redAleatoria.length}`;
+    msgTiempo.textContent = "Tiempo total de envío: 0 ms";
 
 }
 
@@ -251,5 +262,15 @@ btnMinPath.onclick = () => {
     // Calcular la ruta mínima entre el nodo origen y el nodo destino utilizando Dijkstra con retrasos
     rutaMinimaConRetardos = dijkstraConRetardos(redAleatoria, nodoOrigen, nodoDestino);
     console.log("Ruta mínima con retrasos:", rutaMinimaConRetardos);
+
+    // Calcular tiempo total de retardo de la ruta
+    let totalDelay = rutaMinimaConRetardos.reduce((acc, nodo) => acc + nodo.delay, 0);
+
+    // Volvemos a dibujar todo
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawNet(redAleatoria, rutaMinimaConRetardos);
+
+    msgEstado.textContent = "Ruta mínima calculada correctamente.";
+    msgTiempo.textContent = "Tiempo total de envío: ${Math.floor(totalDelay)} ms";
 
 }
