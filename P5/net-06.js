@@ -76,9 +76,6 @@ function randomNumber(min, max) {
 
 // Dibujar la red en el canvas
 function drawNet(nnodes) {
-
-    console.log("Dibujando", nnodes.length, "nodos...");
-
     // Dibujamos las conexiones entre nodos
     nnodes.forEach(nodo => {
         nodo.conexiones.forEach(({ nodo: conexion, peso }) => {
@@ -86,6 +83,15 @@ function drawNet(nnodes) {
             ctx.moveTo(nodo.x, nodo.y);
             ctx.lineTo(conexion.x, conexion.y);
             ctx.stroke();
+
+            ctx.font = '12px Arial';
+            ctx.fillStyle = 'black';
+            ctx.textAlign = 'center';
+            pw = "N" + nodo.id + " pw " + peso;
+            const midX = Math.floor((nodo.x + conexion.x) / 2);
+            const midY = Math.floor((nodo.y + conexion.y) / 2);
+            ctx.fillText(pw, midX, midY);
+
         });
     });
 
@@ -105,7 +111,6 @@ function drawNet(nnodes) {
         ctx.fillText(nodoDesc, nodo.x, nodo.y + 5);
     });
 }
-
 // Función de calback para generar la red de manera aleatoria
 btnCNet.onclick = () => {
 
