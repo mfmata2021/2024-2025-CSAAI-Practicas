@@ -35,16 +35,51 @@ class Nodo {
 }
 
 // Función para generar una red aleatoria con nodos en diferentes estados de congestión
+// Función para generar una red aleatoria con nodos en diferentes estados de congestión
 function crearRedAleatoriaConCongestion(numNodos, numConexiones) {
 
     const nodos = [];
     let x = 0, y = 0, delay = 0;
     let nodoActual = 0, nodoAleatorio = 0, pickNode = 0, peso = 0;
+    let bSpace = false;
+
+    const xs = Math.floor(canvas.width / numNodos);
+    const ys = Math.floor(canvas.height / 2);
+    const xr = canvas.width - nodeRadius;
+    const yr = canvas.height - nodeRadius;
+    let xp = nodeRadius;
+    let yp = nodeRadius;
+    let xsa = xs;
+    let ysa = ys;
 
     // Generamos los nodos
     for (let i = 0; i < numNodos; i++) {
-        x = randomNumber(nodeRadius, (canvas.width - nodeRadius)); // Generar coordenada x aleatoria
-        y = randomNumber(nodeRadius, (canvas.height - nodeRadius)); // Generar coordenada y aleatoria
+
+        //var random_boolean = Math.random() < 0.5;
+        if (Math.random() < 0.5) {
+            yp = nodeRadius;
+            ysa = ys;
+        }
+        else {
+            yp = ys;
+            ysa = yr;
+        }
+
+        x = randomNumber(xp, xsa); // Generar coordenada x aleatoria
+        y = randomNumber(yp, ysa); // Generar coordenada y aleatoria
+
+        xp = xsa;
+        xsa = xsa + xs;
+
+        if (xsa > xr && xsa <= canvas.width) {
+            xsa = xr;
+        }
+
+        if (xsa > xr && xsa < canvas.width) {
+            xp = nodeRadius;
+            xsa = xs;
+        }
+
         delay = generarRetardo(); // Retardo aleatorio para simular congestión
         nodos.push(new Nodo(i, x, y, delay)); // Generar un nuevo nodo y añadirlo a la lista de nodos de la red
     }
