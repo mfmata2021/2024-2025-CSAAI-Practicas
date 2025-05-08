@@ -192,7 +192,7 @@ function randomNumber(min, max) {
 }
 
 // Dibujar la red en el canvas
-function drawNet(nnodes) {
+function drawNet(nnodes, ruta = []) {
     // Dibujamos las conexiones entre nodos
     nnodes.forEach(nodo => {
         nodo.conexiones.forEach(({ nodo: conexion, peso }) => {
@@ -218,7 +218,7 @@ function drawNet(nnodes) {
     nnodes.forEach(nodo => {
         ctx.beginPath();
         ctx.arc(nodo.x, nodo.y, nodeRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = ruta.includes(nodo) ? 'green' : 'blue';
+        ctx.fillStyle = ruta.find(n => n.id === nodo.id) ? 'green' : 'blue';
         ctx.fill();
         ctx.stroke();
         ctx.font = '12px Arial';
@@ -271,6 +271,7 @@ btnMinPath.onclick = () => {
     drawNet(redAleatoria, rutaMinimaConRetardos);
 
     msgEstado.textContent = "Ruta mínima calculada correctamente.";
-    msgTiempo.textContent = "Tiempo total de envío: ${Math.floor(totalDelay)} ms";
+    msgTiempo.textContent = `Tiempo total de envío: ${Math.floor(totalDelay)} ms`;
+
 
 }
