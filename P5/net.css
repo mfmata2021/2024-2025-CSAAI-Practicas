@@ -36,3 +36,8 @@ button:hover {
     border: 2px dashed #F7A4A4;
     margin-bottom: 20px;
 }
+
+#networkCanvas {
+    display: block;
+    margin: 0 auto;
+}

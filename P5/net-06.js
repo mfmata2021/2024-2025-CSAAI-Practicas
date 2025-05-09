@@ -218,7 +218,7 @@ function drawNet(nnodes, ruta = []) {
     nnodes.forEach(nodo => {
         ctx.beginPath();
         ctx.arc(nodo.x, nodo.y, nodeRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = ruta.find(n => n.id === nodo.id) ? 'green' : 'blue';
+        ctx.fillStyle = ruta.find(n => n.id === nodo.id) ? 'green' : '#FF69B4';
         ctx.fill();
         ctx.stroke();
         ctx.font = '12px Arial';
