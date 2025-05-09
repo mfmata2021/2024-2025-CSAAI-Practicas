@@ -5,9 +5,14 @@ const ctx = canvas.getContext('2d');
 let redAleatoria;
 let nodoOrigen = 0, nodoDestino = 0;
 let rutaMinimaConRetardos;
+let numNodos = getRandomNumNodos();
+
+function getRandomNumNodos() {
+    return Math.floor(Math.random() * 3) + 3; // genera 3, 4 o 5
+}
+
 
 const nodeRadius = 40;
-const numNodos = 5;
 const nodeConnect = 2;
 const nodeRandomDelay = 1000;
 const pipeRandomWeight = 100; // No hay retardo entre nodos 100
