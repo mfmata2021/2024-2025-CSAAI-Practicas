@@ -240,7 +240,7 @@ function getRandomNumNodos() {
 
 // Función de calback para generar la red de manera aleatoria
 btnCNet.onclick = () => {
-    let numNodos = getRandomNumNodos();
+    numNodos = getRandomNumNodos();
 
     console.log("Generando red aleatoria...");
     // Generar red de nodos con congestión creada de manera aleatoria redAleatoria
