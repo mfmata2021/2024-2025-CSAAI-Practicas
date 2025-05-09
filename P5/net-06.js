@@ -266,10 +266,6 @@ btnCNet.onclick = () => {
 
 
 btnMinPath.onclick = () => {
-    if (!redAleatoria || redAleatoria.length === 0) {
-        msgEstado.textContent = "Primero, genera la red.";
-        return;
-    }
 
     // Supongamos que tienes una red de nodos llamada redAleatoria y tienes nodos origen y destino
     nodoOrigen = redAleatoria[0]; // Nodo de origen
