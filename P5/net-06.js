@@ -5,6 +5,7 @@ const ctx = canvas.getContext('2d');
 let redAleatoria;
 let nodoOrigen = 0, nodoDestino = 0;
 let rutaMinimaConRetardos;
+let numNodos;
 
 
 function getRandomNumNodos() {
