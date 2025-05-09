@@ -234,11 +234,11 @@ function drawNet(nnodes, ruta = []) {
 }
 // Función de calback para generar la red de manera aleatoria
 btnCNet.onclick = () => {
+    numNodos = getRandomNumNodos();
 
     console.log("Generando red aleatoria...");
     // Generar red de nodos con congestión creada de manera aleatoria redAleatoria
     // Cada nodo tendrá un delay aleatorio para simular el envío de paquetes de datos
-    numNodos = getRandomNumNodos();
     redAleatoria = crearRedAleatoriaConCongestion(numNodos, nodeConnect);
 
     if (!redAleatoria || redAleatoria.length === 0) {
