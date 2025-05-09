@@ -30,7 +30,7 @@ function dijkstraConRetardos(red, origen, destino) {
         // Actualizar las distancias a los nodos adyacentes al nodo actual
         auxNode = red[nodoActual];
         for (const { nodo, peso } of auxNode.conexiones) {
-            const distanciaTotal = distancia[nodoActual] + peso + nodo.delay; // Considerar el retardo en el procesamiento del nodo
+            const distanciaTotal = distancia[nodoActual] + peso + auxNode.delay; // Considerar el retardo en el procesamiento del nodo
             if (distanciaTotal < distancia[nodo.id]) {
                 distancia[nodo.id] = distanciaTotal;
                 anterior[nodo.id] = nodoActual;
