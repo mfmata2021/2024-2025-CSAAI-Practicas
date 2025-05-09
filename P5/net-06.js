@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 let redAleatoria;
 let nodoOrigen = 0, nodoDestino = 0;
 let rutaMinimaConRetardos;
-let numNodos = getRandomNumNodos();
+
 
 function getRandomNumNodos() {
     return Math.floor(Math.random() * 3) + 3; // genera 3, 4 o 5
@@ -232,9 +232,14 @@ function drawNet(nnodes, ruta = []) {
         ctx.fillText(`N${nodo.id} (${Math.floor(nodo.delay)} ms)`, nodo.x, nodo.y + 5);
     });
 }
+
+function getRandomNumNodos() {
+    return Math.floor(Math.random() * 3) + 3;
+}
+
 // Función de calback para generar la red de manera aleatoria
 btnCNet.onclick = () => {
-    numNodos = getRandomNumNodos();
+    let numNodos = getRandomNumNodos();
 
     console.log("Generando red aleatoria...");
     // Generar red de nodos con congestión creada de manera aleatoria redAleatoria
